@@ -3,8 +3,11 @@ Unit tests for copyright.py
 """
 
 import unittest
-from unittest.mock import patch
 import os
+try:
+    from mock import patch
+except ImportError:
+    from unittest.mock import patch
 
 from copyright import Module, NOTICE
 
