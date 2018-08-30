@@ -65,6 +65,11 @@ class Module:
     def line_contains_docstring(line):
         return any([docstring in line for docstring in ['"""', "'''"]])
 
+    @staticmethod
+    def one_line_docstring(line):
+        matches = re.findall('"""|\'\'\'', line)
+        return len(matches) == 2
+
     def has_copyright(self):
         return any([NOTICE in line for line in self.lines])
 
@@ -78,9 +83,17 @@ class Module:
         
         start_ix = docstring_line(self.lines)
         end_ix = docstring_line(self.lines, start_ix)
-        insert_ix = end_ix
-        notice_lines = [NOTICE]
-        overwrite = False
+
+        if end_ix is None and self.one_line_docstring(self.lines[start_ix]):
+            # one line docstring
+            contents = re.sub('"""|\'\'\'', '', self.lines[start_ix])
+            insert_ix = start_ix
+            notice_lines = ['"""', contents, NOTICE, '"""']
+            overwrite = True  
+        else:
+            insert_ix = end_ix
+            notice_lines = [NOTICE]
+            overwrite = False
         
         return insert_ix, notice_lines, overwrite
 
@@ -138,5 +151,3 @@ if __name__ == '__main__':
                     print('[{}] {} in {}'.format('X' if success else ' ', file, root))
                 except Exception as e:
                     print('[ ] {} in {} raised error {}'.format(file, root, repr(e)))
-        
-    EnvironmentError

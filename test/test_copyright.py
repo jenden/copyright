@@ -132,6 +132,25 @@ class TestPythonModule(unittest.TestCase):
             self.assertEqual(actual, expected, expected + ' failed.')
 
         mock_write.assert_called()
+    
+    @patch.object(Module, 'write_changes')
+    def test_works_with_one_line_docstring(self, mock_write):
+        expected = [
+            '"""\n',
+            'one_line_docstring.py: This file has a docstring.\n',
+            NOTICE + '\n',
+            '"""\n',
+            '\n',
+            'import os\n',
+        ]
+        
+        m = Module('test/examples/one_line_docstring.py')
+        m.add_copyright()
+
+        for actual, expected in zip(m.lines[:6], expected):
+            self.assertEqual(actual, expected)
+
+        mock_write.assert_called()
 
     @patch.object(Module, 'write_changes')
     def test_works_with_no_header(self, mock_write):
