@@ -1,6 +1,5 @@
 """
 Opens a file, adds copyright info to the header of any .py file.
-Copyright (C) 2018 Boeing Vancouver.  All Rights Reserved.
 """
 
 import os
@@ -11,8 +10,9 @@ import argparse
 EXTENSIONS = ['.py']
 NOTICE = "Copyright (C) 2018 Will Jenden. All Rights Reserved."
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser('Add copyright string to the beginning of python modules.')
 parser.add_argument('-d', '--directory', default='.', help='location to walk')
+parser.add_argument('-c', '--copyright', type=str, default=None, help='copyright notice')
 
 class Module:
 
@@ -127,6 +127,9 @@ class Module:
 if __name__ == '__main__':
 
     args = parser.parse_args()
+    if args.copyright:
+        NOTICE = args.copyright
+
     for root, dirs, files in os.walk(args.directory):
         for file in files:
             if any([file.endswith(extension) for extension in EXTENSIONS]):
