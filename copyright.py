@@ -14,6 +14,7 @@ parser = argparse.ArgumentParser('Add copyright string to the beginning of pytho
 parser.add_argument('-d', '--directory', default='.', help='location to walk')
 parser.add_argument('-c', '--copyright', type=str, default=None, help='copyright notice')
 
+
 class Module:
 
     def __init__(self, filepath):
@@ -82,15 +83,14 @@ class Module:
                     return ix + start_ix
         
         start_ix = docstring_line(self.lines)
-        end_ix = docstring_line(self.lines, start_ix)
 
-        if end_ix is None and self.one_line_docstring(self.lines[start_ix]):
-            # one line docstring
+        if self.one_line_docstring(self.lines[start_ix]):
             contents = re.sub('"""|\'\'\'', '', self.lines[start_ix])
             insert_ix = start_ix
             notice_lines = ['"""', contents, NOTICE, '"""']
-            overwrite = True  
+            overwrite = True
         else:
+            end_ix = docstring_line(self.lines, start_ix)
             insert_ix = end_ix
             notice_lines = [NOTICE]
             overwrite = False
@@ -136,6 +136,7 @@ class Module:
         print('Unable to add notice to {}. Reverting file.'.format(self.filepath))
         with open(self.filepath, 'w') as f:
             f.writelines(self.original)
+
 
 if __name__ == '__main__':
 
