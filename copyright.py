@@ -21,7 +21,7 @@ class Module:
         with open(filepath, 'r') as f:
             self.lines = list(f.readlines())
         
-        self.original = self.lines.copy()
+        self.original = self.lines[:]
         
         self.header_type = None
         self.get_file_header()
@@ -46,7 +46,7 @@ class Module:
             raise RuntimeError('Unknown header type {}'.format(self.header_type))
 
         self.add_notice(ix, notice_lines, overwrite)
-        self.write_changes()
+        return self.write_changes()
 
     def get_file_header(self):
         # todo: find complex headers (e.g. both types of comments before code)
