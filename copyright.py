@@ -8,7 +8,7 @@ import re
 import imp
 import argparse
 
-EXTENSIONS = ['py']
+EXTENSIONS = ['.py']
 NOTICE = "Copyright (C) 2018 Will Jenden. All Rights Reserved."
 
 parser = argparse.ArgumentParser()
@@ -34,7 +34,7 @@ class Module:
         """
         
         if self.has_copyright():
-            return
+            return True
         
         if self.header_type == 'docstring':
             ix, notice_lines, overwrite = self.docstring_insertion()
@@ -108,6 +108,9 @@ class Module:
         
         if not self.can_import():
             self.revert_changes()
+            return False
+        else:
+            return True
         
     def can_import(self):
         try:
@@ -121,7 +124,15 @@ class Module:
         with open(self.filepath, 'w') as f:
             f.writelines(self.original)
 
-
 if __name__ == '__main__':
+
     args = parser.parse_args()
-    for in os.walk(args.dir)
+    for root, dirs, files in os.walk(args.dir):
+        for file in files:
+            if any([file.endswith(extension) for extension in EXTENSIONS]):
+                try:
+                    success = Module(os.path.join(root, file)).add_copyright()
+                    print('[{}] {} in {}'.format('X' if success else ' ', file, root))
+                except e:
+                    print('[ ] {} in {} raised error {}'.format(file, root, e.message))
+        
