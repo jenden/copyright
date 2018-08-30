@@ -9,6 +9,6 @@ python copyright.py -d myproject -c "Copyright (c) 2018 Roald Dahl."
 
 
 ## Todo:
-[ ] Commented headers (beginning with #)
-[ ] Single line docstrings
-[ ] Mixed headers such as shbang with docstring
+[ ] Commented headers (beginning with #)  
+[ ] Single line docstrings  
+[ ] Mixed headers such as shebang with docstring  
