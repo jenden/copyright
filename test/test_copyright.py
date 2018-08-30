@@ -107,7 +107,8 @@ class TestPythonModule(unittest.TestCase):
             self.assertEqual(actual, expected, expected + ' failed.')
 
     def test_detects_importable_module(self):
-        pass
+        m = Module('test/examples/simple_docstring.py')
+        self.assertTrue(m.can_import())
 
     def test_detects_unimportable_module(self):
         m = Module('test/examples/bad_module.py')
