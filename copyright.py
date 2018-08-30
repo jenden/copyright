@@ -134,5 +134,6 @@ if __name__ == '__main__':
                     success = Module(os.path.join(root, file)).add_copyright()
                     print('[{}] {} in {}'.format('X' if success else ' ', file, root))
                 except Exception as e:
-                    print('[ ] {} in {} raised error {}'.format(file, root, str(e)))
+                    print('[ ] {} in {} raised error {}'.format(file, root, repr(e)))
         
+    EnvironmentError
