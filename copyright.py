@@ -127,12 +127,12 @@ class Module:
 if __name__ == '__main__':
 
     args = parser.parse_args()
-    for root, dirs, files in os.walk(args.dir):
+    for root, dirs, files in os.walk(args.directory):
         for file in files:
             if any([file.endswith(extension) for extension in EXTENSIONS]):
                 try:
                     success = Module(os.path.join(root, file)).add_copyright()
                     print('[{}] {} in {}'.format('X' if success else ' ', file, root))
-                except e:
-                    print('[ ] {} in {} raised error {}'.format(file, root, e.message))
+                except Exception as e:
+                    print('[ ] {} in {} raised error {}'.format(file, root, str(e)))
         
